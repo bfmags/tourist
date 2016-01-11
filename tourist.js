@@ -46,7 +46,7 @@
 
     Base.prototype.finalButtonTemplate = '<button class="btn btn-primary btn-sm pull-right tour-next">Finish up</button>';
 
-    Base.prototype.closeButtonTemplate = '<a class="btn btn-close tour-close" href="#"><i class="icon icon-remove"></i></a>';
+    Base.prototype.closeButtonTemplate = '<a class="btn btn-close tour-close" href="#"><i class="<%= classes %>"></i></a>';
 
     Base.prototype.okButtonTemplate = '<button class="btn btn-sm tour-close btn-primary">Okay</button>';
 
@@ -55,6 +55,8 @@
     Base.prototype.actionLabels = ['Do this:', 'Then this:', 'Next this:'];
 
     Base.prototype.highlightClass = 'tour-highlight';
+
+    Base.prototype.closeButtonClasses = 'icon icon-remove';
 
     Base.prototype.template = _.template('<div>\n  <div class="tour-container">\n    <%= close_button %>\n    <%= content %>\n    <p class="tour-counter <%= counter_class %>"><%= counter%></p>\n  </div>\n  <div class="tour-buttons">\n    <%= buttons %>\n  </div>\n</div>');
 
@@ -181,8 +183,15 @@
     };
 
     Base.prototype._buildCloseButton = function(step) {
+      var closeButton, closeClass;
+      closeButton = this.closeButtonTemplate;
+      closeClass = this.closeButtonClasses;
+      if (step.closeButtonClass) {
+        closeClass += ' ' + step.closeButtonClass;
+      }
+      closeButton = closeButton.replace(/<%= classes %>/, closeClass);
       if (step.closeButton) {
-        return this.closeButtonTemplate;
+        return closeButton;
       } else {
         return '';
       }

@@ -14,13 +14,14 @@ class Tourist.Tip.Base
   nextButtonTemplate: '<button class="btn btn-primary btn-sm pull-right tour-next">Next step →</button>'
   finalButtonTemplate: '<button class="btn btn-primary btn-sm pull-right tour-next">Finish up</button>'
 
-  closeButtonTemplate: '<a class="btn btn-close tour-close" href="#"><i class="icon icon-remove"></i></a>'
+  closeButtonTemplate: '<a class="btn btn-close tour-close" href="#"><i class="<%= classes %>"></i></a>'
   okButtonTemplate: '<button class="btn btn-sm tour-close btn-primary">Okay</button>'
 
   actionLabelTemplate: _.template '<h4 class="action-label"><%= label %></h4>'
   actionLabels: ['Do this:', 'Then this:', 'Next this:']
 
   highlightClass: 'tour-highlight'
+  closeButtonClasses: 'icon icon-remove'
 
   template: _.template '''
     <div>
@@ -178,7 +179,16 @@ class Tourist.Tip.Base
     buttons
 
   _buildCloseButton: (step) ->
-    if step.closeButton then @closeButtonTemplate else ''
+
+    closeButton = @closeButtonTemplate
+
+    closeClass = @closeButtonClasses
+
+    closeClass += ' ' + step.closeButtonClass if step.closeButtonClass
+
+    closeButton = closeButton.replace /<%= classes %>/, closeClass
+
+    if step.closeButton then closeButton else ''
 
   _renderActionLabels: (el) ->
     actions = el.find('.action')
