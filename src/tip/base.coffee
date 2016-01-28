@@ -93,6 +93,7 @@ class Tourist.Tip.Base
 
   # User clicked close or ok button
   onClickClose: (event) =>
+    alert("Closing")
     @trigger('click:close', this, event)
     false
 
@@ -124,6 +125,19 @@ class Tourist.Tip.Base
     el = @_getTipElement()
     el.delegate('.tour-close', 'click', @onClickClose)
     el.delegate('.tour-next', 'click', @onClickNext)
+
+    next  = @onClickNext
+    close = @onClickClose
+
+    $(document).keydown (e) ->
+      key = e.which
+      if key == 39 # Right ->
+        next()
+      else if key == 27 # esc
+        close()
+
+    false
+
 
   # Set the current target
   #

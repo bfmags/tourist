@@ -111,6 +111,7 @@
 
 
     Base.prototype.onClickClose = function(event) {
+      alert("Closing");
       this.trigger('click:close', this, event);
       return false;
     };
@@ -130,10 +131,22 @@
     Base.prototype._renderContent = function(step, contentElement) {};
 
     Base.prototype._bindClickEvents = function() {
-      var el;
+      var close, el, next;
       el = this._getTipElement();
       el.delegate('.tour-close', 'click', this.onClickClose);
-      return el.delegate('.tour-next', 'click', this.onClickNext);
+      el.delegate('.tour-next', 'click', this.onClickNext);
+      next = this.onClickNext;
+      close = this.onClickClose;
+      $(document).keydown(function(e) {
+        var key;
+        key = e.which;
+        if (key === 39) {
+          return next();
+        } else if (key === 27) {
+          return close();
+        }
+      });
+      return false;
     };
 
     Base.prototype._setTarget = function(target, step) {
@@ -266,23 +279,11 @@
     };
 
     Bootstrap.prototype.show = function() {
-      var fn;
-      if (this.options.showEffect) {
-        fn = Tourist.Tip.Bootstrap.effects[this.options.showEffect];
-        return fn.call(this, this.tip, this.tip.el);
-      } else {
-        return this.tip.show();
-      }
+      return this.tip.show();
     };
 
     Bootstrap.prototype.hide = function() {
-      var fn;
-      if (this.options.hideEffect) {
-        fn = Tourist.Tip.Bootstrap.effects[this.options.hideEffect];
-        return fn.call(this, this.tip, this.tip.el);
-      } else {
-        return this.tip.hide();
-      }
+      return this.tip.hide();
     };
 
     /*
