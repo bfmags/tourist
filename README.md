@@ -98,6 +98,7 @@ A simple Example of a step object:
   content: '<p>Welcome to my step</p>',
   target: $('#something-to-point-at'),
   closeButton: true,
+  closeButtonClass: 'glyphicon glyphicon-remove',
   highlightTarget: true,
   setup: (tour, options) {
     // do stuff in the interface/bind
@@ -124,6 +125,7 @@ A simple Example of a step object:
 * `at` string position on the element the tip points to. default: 'right center' see http://craigsworks.com/projects/qtip2/docs/position/#basics
 * `okButton` optional bool, true will show a 'primary' ok button
 * `closeButton` optional bool, true will show a close button in the top right corner
+* `closeButtonClass` optional string, if populated the close button will be set to class that is used. (Recommended usage is to use glyphicons from bootstrap.)
 * `skipButton` optional bool, true will show a 'secondary' skip button
 * `nextButton` optional bool, true will show a 'primary' next button
 * `setup` optional function called before the tip is shown; see [setup](#setup) section

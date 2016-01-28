@@ -10,6 +10,7 @@
 /* bootstrap styles */
 .tourist-popover{
   padding: 0;
+  display: inline-table !important;
 }
 .tourist-popover .popover-content{
   padding: 10px 0 0 0;
@@ -18,6 +19,11 @@
 .tourist-popover .popover-content p{
   margin: 0 8px 10px 8px;
 }
+
+.tour-container .tour-close + p:nth-child(2) {
+    margin-right: 25px;
+}
+
 .tourist-popover .popover-content .action-label{
   background: rgba(0, 111, 255, 0.168627);
   font-size: 14px;

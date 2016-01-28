@@ -443,7 +443,7 @@
         top: 0,
         left: 0,
         margin: 0,
-        display: 'block'
+        display: 'table'
       }).removeClass('top').removeClass('bottom').removeClass('left').removeClass('right').addClass(this.FLIP_POSITION[clas]);
       if (!target) {
         return;

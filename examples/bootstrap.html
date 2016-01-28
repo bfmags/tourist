@@ -5,8 +5,7 @@
   <title>Bootstrap Example</title>
 
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
-
+  
   <script src="../test/vendor/javascripts/jquery-1.9.1.js"></script>
   <script src="../test/vendor/javascripts/underscore-1.4.4.js"></script>
   <script src="../test/vendor/javascripts/backbone-1.0.0.js"></script>
@@ -30,6 +29,15 @@
     content: '<p>This is a minimal step.</p><p class="action">Read the heading, then click next.</p>',
     highlightTarget: true,
     nextButton: true,
+    target: $('#main-heading'),
+    my: 'top center',
+    at: 'bottom center'
+  },{
+    content: '<p>Check Close button. Some jiberish here lkjhadsflkjjagdslkfgasdfkjgaksjfdhgkjadshgfkadsfkjhgfdsa</p>',
+    highlightTarget: true,
+    nextButton: true,
+    closeButton: true,
+    closeButtonClass : 'glyphicon glyphicon-remove',
     target: $('#main-heading'),
     my: 'top center',
     at: 'bottom center'

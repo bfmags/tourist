@@ -184,7 +184,7 @@ class Tourist.Tip.BootstrapTip
     originalDisplay = @el.css('display')
 
     @el
-      .css({ top: 0, left: 0, margin: 0, display: 'block' })
+      .css({ top: 0, left: 0, margin: 0, display: 'table' })
       .removeClass('top').removeClass('bottom')
       .removeClass('left').removeClass('right')
       .addClass(@FLIP_POSITION[clas])
