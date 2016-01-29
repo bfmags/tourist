@@ -99,6 +99,19 @@
   });
   TOUR.start();
 
+  function start(e) {
+    e.preventDefault();
+    TOUR.start();
+  }
+
+  function stop(e) {
+    e.preventDefault();
+    TOUR.stop();
+  }
+
+  $('#start').click(start);
+  $('#stop').click(stop);
+
   });
   </script>
 
@@ -112,6 +125,8 @@
     <h1 id="main-heading" class="page-header">Tourist works with Bootstrap. Let me show you.</h1>
     <p>This is an extremely minimal example. Look at the page source!</p>
 
+    <button type="button" id="start">start</button>
+    <button type="button" id="stop">stop</button>
   </div>
 </body>
 </html>

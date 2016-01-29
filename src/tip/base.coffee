@@ -85,6 +85,7 @@ class Tourist.Tip.Base
   # Unhighlight and unset the current target
   cleanupCurrentTarget: ->
     @target.removeClass(@highlightClass) if @target and @target.removeClass
+    console.log(@target)
     @target = null
 
   ###
@@ -93,7 +94,6 @@ class Tourist.Tip.Base
 
   # User clicked close or ok button
   onClickClose: (event) =>
-    alert("Closing")
     @trigger('click:close', this, event)
     false
 

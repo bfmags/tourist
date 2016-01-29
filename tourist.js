@@ -102,6 +102,7 @@
       if (this.target && this.target.removeClass) {
         this.target.removeClass(this.highlightClass);
       }
+      console.log(this.target);
       return this.target = null;
     };
 
@@ -111,7 +112,6 @@
 
 
     Base.prototype.onClickClose = function(event) {
-      alert("Closing");
       this.trigger('click:close', this, event);
       return false;
     };
@@ -456,7 +456,7 @@
         top: 0,
         left: 0,
         margin: 0,
-        display: 'table'
+        display: 'block'
       }).removeClass('top').removeClass('bottom').removeClass('left').removeClass('right').addClass(this.FLIP_POSITION[clas]);
       if (!target) {
         return;
@@ -986,7 +986,8 @@
       this.model.set({
         current_step: null
       });
-      return this.trigger('stop', this);
+      this.trigger('stop', this);
+      return $('.popover').remove();
     };
 
     Tour.prototype._showFinalStep = function(success) {
