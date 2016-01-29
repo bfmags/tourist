@@ -17,19 +17,19 @@ class Tourist.Tip.Bootstrap extends Tourist.Tip.Base
 
   # Show the tip
   show: ->
-  #  if @options.showEffect
-  #    fn = Tourist.Tip.Bootstrap.effects[@options.showEffect]
-  #    fn.call(this, @tip, @tip.el)
-  #  else
-    @tip.show()
+    if @options.showEffect
+      fn = Tourist.Tip.Bootstrap.effects[@options.showEffect]
+      fn.call(this, @tip, @tip.el)
+    else
+      @tip.show()
 
   # Hide the tip
   hide: ->
-  #  if @options.hideEffect
-  #    fn = Tourist.Tip.Bootstrap.effects[@options.hideEffect]
-  #    fn.call(this, @tip, @tip.el)
-  #  else
-    @tip.hide()
+    if @options.hideEffect
+      fn = Tourist.Tip.Bootstrap.effects[@options.hideEffect]
+      fn.call(this, @tip, @tip.el)
+    else
+      @tip.hide()
 
 
   ###
