@@ -194,7 +194,7 @@ class Tourist.Tour
     @_teardownCurrentStep()
     @model.set(current_step: null)
     @trigger('stop', this)
-    $('.popover').remove()
+    console.log(@view)
 
   # Shows a final step.
   #

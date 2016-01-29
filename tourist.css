@@ -10,7 +10,7 @@
 /* bootstrap styles */
 .tourist-popover{
   padding: 0;
-  display: inline-table !important;
+  /*display: inline-table !important;*/
 }
 .tourist-popover .popover-content{
   padding: 10px 0 0 0;
