@@ -45,7 +45,10 @@ module.exports = function(grunt) {
       },
       test: {
         files: ['test/src/**/*.coffee'],
-        tasks: ['coffee:test']
+        tasks: ['coffee:test'],
+        options: {
+          livereload: true,
+        },
       }
     },
 

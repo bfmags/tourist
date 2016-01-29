@@ -295,6 +295,7 @@ tour = new Tourist.Tour
 * Install grunt modules `npm install`
 * Automatically compile changes `grunt watch`
 * Run tests with grunt `grunt test`
+* Run with browser sync `grunt parallel` and navigate to `http://127.0.0.1:9000/examples`
 
 ## Browser support
 
