@@ -1,22 +1,20 @@
 (function() {
-  var _ref, _ref1, _ref2, _ref3,
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   window.Tourist = window.Tourist || {};
 
+
   /*
   A model for the Tour. We'll only use the 'current_step' property.
-  */
+   */
 
-
-  Tourist.Model = (function(_super) {
-    __extends(Model, _super);
+  Tourist.Model = (function(superClass) {
+    extend(Model, superClass);
 
     function Model() {
-      _ref = Model.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Model.__super__.constructor.apply(this, arguments);
     }
 
     Model.prototype._module = 'Tourist';
@@ -27,13 +25,13 @@
 
   window.Tourist.Tip = window.Tourist.Tip || {};
 
+
   /*
   The flyout showing the content of each step.
   
   This is the base class containing most of the logic. Can extend for different
   tooltip implementations.
-  */
-
+   */
 
   Tourist.Tip.Base = (function() {
     Base.prototype._module = 'Tourist';
@@ -60,10 +58,10 @@
 
     Base.prototype.template = _.template('<div>\n  <div class="tour-container">\n    <%= close_button %>\n    <%= content %>\n    <p class="tour-counter <%= counter_class %>"><%= counter%></p>\n  </div>\n  <div class="tour-buttons">\n    <%= buttons %>\n  </div>\n</div>');
 
-    function Base(options) {
-      this.options = options != null ? options : {};
-      this.onClickNext = __bind(this.onClickNext, this);
-      this.onClickClose = __bind(this.onClickClose, this);
+    function Base(options1) {
+      this.options = options1 != null ? options1 : {};
+      this.onClickNext = bind(this.onClickNext, this);
+      this.onClickClose = bind(this.onClickClose, this);
       this.el = $('<div/>');
       this.initialize(options);
       this._bindClickEvents();
@@ -105,10 +103,10 @@
       return this.target = null;
     };
 
+
     /*
     Event Handlers
-    */
-
+     */
 
     Base.prototype.onClickClose = function(event) {
       alert("Closing");
@@ -121,10 +119,10 @@
       return false;
     };
 
+
     /*
     Private
-    */
-
+     */
 
     Base.prototype._getTipElement = function() {};
 
@@ -211,19 +209,19 @@
     };
 
     Base.prototype._renderActionLabels = function(el) {
-      var action, actionIndex, actions, label, _i, _len, _results;
+      var action, actionIndex, actions, i, label, len, results;
       actions = el.find('.action');
       actionIndex = 0;
-      _results = [];
-      for (_i = 0, _len = actions.length; _i < _len; _i++) {
-        action = actions[_i];
+      results = [];
+      for (i = 0, len = actions.length; i < len; i++) {
+        action = actions[i];
         label = $($.parseHTML(this.actionLabelTemplate({
           label: this.actionLabels[actionIndex]
         })));
         label.insertBefore(action);
-        _results.push(actionIndex++);
+        results.push(actionIndex++);
       }
-      return _results;
+      return results;
     };
 
     Base._cacheTip = function(tip) {
@@ -234,13 +232,13 @@
     };
 
     Base.destroy = function() {
-      var tip, _i, _len, _ref1;
+      var i, len, ref, tip;
       if (!Tourist.Tip.Base._cachedTips) {
         return;
       }
-      _ref1 = Tourist.Tip.Base._cachedTips;
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        tip = _ref1[_i];
+      ref = Tourist.Tip.Base._cachedTips;
+      for (i = 0, len = ref.length; i < len; i++) {
+        tip = ref[i];
         tip.destroy();
       }
       return Tourist.Tip.Base._cachedTips = null;
@@ -250,17 +248,16 @@
 
   })();
 
+
   /*
   Bootstrap based tip implementation
-  */
+   */
 
-
-  Tourist.Tip.Bootstrap = (function(_super) {
-    __extends(Bootstrap, _super);
+  Tourist.Tip.Bootstrap = (function(superClass) {
+    extend(Bootstrap, superClass);
 
     function Bootstrap() {
-      _ref1 = Bootstrap.__super__.constructor.apply(this, arguments);
-      return _ref1;
+      return Bootstrap.__super__.constructor.apply(this, arguments);
     }
 
     Bootstrap.prototype.initialize = function(options) {
@@ -286,10 +283,10 @@
       return this.tip.hide();
     };
 
+
     /*
     Private
-    */
-
+     */
 
     Bootstrap.prototype._getTipElement = function() {
       return this.tip.el;
@@ -315,7 +312,7 @@
 
   Tourist.Tip.Bootstrap.effects = {
     slidein: function(tip, element) {
-      var OFFSETS, css, easing, easings, offset, side, value, _i, _len;
+      var OFFSETS, css, easing, easings, i, len, offset, side, value;
       OFFSETS = {
         top: 80,
         left: 80,
@@ -339,8 +336,8 @@
       element.show();
       css[side] = value;
       easings = ['easeOutCubic', 'swing', 'linear'];
-      for (_i = 0, _len = easings.length; _i < _len; _i++) {
-        easing = easings[_i];
+      for (i = 0, len = easings.length; i < len; i++) {
+        easing = easings[i];
         if ($.easing[easing]) {
           break;
         }
@@ -350,6 +347,7 @@
     }
   };
 
+
   /*
   Simple implementation of tooltip with bootstrap markup.
   
@@ -358,8 +356,7 @@
   
     my: 'top center'
     at: 'bottom center'
-  */
-
+   */
 
   Tourist.Tip.BootstrapTip = (function() {
     BootstrapTip.prototype.template = '<div class="popover tourist-popover">\n  <div class="arrow"></div>\n  <div class="popover-content"></div>\n</div>';
@@ -394,15 +391,15 @@
       return this.el.hide().removeClass('visible');
     };
 
-    BootstrapTip.prototype.setTarget = function(target) {
-      this.target = target;
+    BootstrapTip.prototype.setTarget = function(target1) {
+      this.target = target1;
       return this._setPosition(this.target, this.my, this.at);
     };
 
-    BootstrapTip.prototype.setPosition = function(target, my, at) {
-      this.target = target;
-      this.my = my;
-      this.at = at;
+    BootstrapTip.prototype.setPosition = function(target1, my1, at1) {
+      this.target = target1;
+      this.my = my1;
+      this.at = at1;
       return this._setPosition(this.target, this.my, this.at);
     };
 
@@ -414,10 +411,10 @@
       return this._getContentElement().html(content);
     };
 
+
     /*
     Private
-    */
-
+     */
 
     BootstrapTip.prototype._getContentElement = function() {
       return this.el.find('.popover-content');
@@ -428,7 +425,7 @@
     };
 
     BootstrapTip.prototype._setPosition = function(target, my, at) {
-      var clas, css, originalDisplay, position, shift, targetPosition, tip, tipOffset, tipPosition, _ref2;
+      var clas, css, originalDisplay, position, ref, shift, targetPosition, tip, tipOffset, tipPosition;
       if (my == null) {
         my = 'left center';
       }
@@ -438,7 +435,7 @@
       if (!target) {
         return;
       }
-      _ref2 = my.split(' '), clas = _ref2[0], shift = _ref2[1];
+      ref = my.split(' '), clas = ref[0], shift = ref[1];
       originalDisplay = this.el.css('display');
       this.el.css({
         top: 0,
@@ -504,8 +501,8 @@
     };
 
     BootstrapTip.prototype._adjustForArrow = function(myPosition, tipPosition) {
-      var clas, height, position, shift, tip, width, _ref2;
-      _ref2 = myPosition.split(' '), clas = _ref2[0], shift = _ref2[1];
+      var clas, height, position, ref, shift, tip, width;
+      ref = myPosition.split(' '), clas = ref[0], shift = ref[1];
       tip = this._getTipElement();
       width = tip[0].offsetWidth;
       height = tip[0].offsetHeight;
@@ -581,20 +578,19 @@
 
   })();
 
+
   /*
   Qtip based tip implementation
-  */
+   */
 
-
-  Tourist.Tip.QTip = (function(_super) {
+  Tourist.Tip.QTip = (function(superClass) {
     var ADJUST, OFFSETS, TIP_HEIGHT, TIP_WIDTH;
 
-    __extends(QTip, _super);
+    extend(QTip, superClass);
 
     function QTip() {
-      this._renderTipBackground = __bind(this._renderTipBackground, this);
-      _ref2 = QTip.__super__.constructor.apply(this, arguments);
-      return _ref2;
+      this._renderTipBackground = bind(this._renderTipBackground, this);
+      return QTip.__super__.constructor.apply(this, arguments);
     }
 
     TIP_WIDTH = 6;
@@ -687,10 +683,10 @@
       return this.qtip.hide();
     };
 
+
     /*
     Private
-    */
-
+     */
 
     QTip.prototype._getTipElement = function() {
       return $('#qtip-' + this.qtip.id);
@@ -702,8 +698,7 @@
     };
 
     QTip.prototype._renderContent = function(step, contentElement) {
-      var at, my,
-        _this = this;
+      var at, my;
       my = step.my || 'left center';
       at = step.at || 'right center';
       this._adjustPlacement(my, at);
@@ -713,9 +708,11 @@
       this.qtip.set('position.at', at);
       this.qtip.set('position.viewport', step.viewport || false);
       this.qtip.set('position.target', step.target || false);
-      return setTimeout(function() {
-        return _this._renderTipBackground(my.split(' ')[0]);
-      }, 10);
+      return setTimeout((function(_this) {
+        return function() {
+          return _this._renderTipBackground(my.split(' ')[0]);
+        };
+      })(this), 10);
     };
 
     QTip.prototype._adjustPlacement = function(my, at) {
@@ -753,18 +750,17 @@
 
   })(Tourist.Tip.Base);
 
+
   /*
   Simplest implementation of a tooltip. Used in the tests. Useful as an example
   as well.
-  */
+   */
 
-
-  Tourist.Tip.Simple = (function(_super) {
-    __extends(Simple, _super);
+  Tourist.Tip.Simple = (function(superClass) {
+    extend(Simple, superClass);
 
     function Simple() {
-      _ref3 = Simple.__super__.constructor.apply(this, arguments);
-      return _ref3;
+      return Simple.__super__.constructor.apply(this, arguments);
     }
 
     Simple.prototype.initialize = function(options) {
@@ -791,6 +787,7 @@
 
   })(Tourist.Tip.Base);
 
+
   /*
   
   A way to make a tour. Basically, you specify a series of steps which explain
@@ -806,9 +803,9 @@
       closeButton: true
       highlightTarget: true
       setup: (tour, options) ->
-        # do stuff in the interface/bind
+         * do stuff in the interface/bind
       teardown: (tour, options) ->
-        # remove stuff/unbind
+         * remove stuff/unbind
     }
   
   Basic Step object options:
@@ -875,17 +872,16 @@
         tour.next()
       teardown: (tour, options) ->
         options.document.unbind('change:something', @onChangeSomething)
-  */
-
+   */
 
   Tourist.Tour = (function() {
     _.extend(Tour.prototype, Backbone.Events);
 
-    function Tour(options) {
+    function Tour(options1) {
       var defs, tipOptions;
-      this.options = options != null ? options : {};
-      this.onChangeCurrentStep = __bind(this.onChangeCurrentStep, this);
-      this.next = __bind(this.next, this);
+      this.options = options1 != null ? options1 : {};
+      this.onChangeCurrentStep = bind(this.onChangeCurrentStep, this);
+      this.next = bind(this.next, this);
       defs = {
         tipClass: 'Bootstrap'
       };
@@ -902,10 +898,10 @@
       this.model.bind('change:current_step', this.onChangeCurrentStep);
     }
 
+
     /*
     Public
-    */
-
+     */
 
     Tour.prototype.start = function() {
       this.trigger('start', this);
@@ -940,19 +936,19 @@
       return this.options.stepOptions = stepOptions;
     };
 
+
     /*
     Handlers
-    */
-
+     */
 
     Tour.prototype.onChangeCurrentStep = function(model, step) {
       return this.view.render(step);
     };
 
+
     /*
     Private
-    */
-
+     */
 
     Tour.prototype._showCancelFinalStep = function() {
       return this._showFinalStep(false);
@@ -1012,14 +1008,14 @@
     };
 
     Tour.prototype._setupStep = function(step) {
-      var fn, _i, _len, _ref4;
+      var fn, i, len, ref;
       if (!(step && step.setup)) {
         return {};
       }
       if (step.bind) {
-        _ref4 = step.bind;
-        for (_i = 0, _len = _ref4.length; _i < _len; _i++) {
-          fn = _ref4[_i];
+        ref = step.bind;
+        for (i = 0, len = ref.length; i < len; i++) {
+          fn = ref[i];
           step[fn] = _.bind(step[fn], step, this, this.options.stepOptions);
         }
       }
