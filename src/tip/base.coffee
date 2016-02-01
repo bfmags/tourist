@@ -129,7 +129,7 @@ class Tourist.Tip.Base
     next  = @onClickNext
     close = @onClickClose
 
-    $(document).keydown (e) ->
+    $(el).keydown (e) ->
       key = e.which
       if key == 39 # Right ->
         next()
