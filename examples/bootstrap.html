@@ -33,7 +33,8 @@
     nextButton: true,
     target: $('#main-heading'),
     my: 'top center',
-    at: 'bottom center'
+    at: 'bottom center',
+    cover: true
   },{
     content: '<p>Check Close button. Some jiberish here lkjhadsflkjjagdslkfgasdfkjgaksjfdhgkjadshgfkadsfkjhgfdsa</p>',
     highlightTarget: true,
@@ -42,7 +43,10 @@
     closeButtonClass : 'glyphicon glyphicon-remove',
     target: $('#main-heading'),
     my: 'top center',
-    at: 'bottom center'
+    at: 'bottom center',
+    cover: true,
+    coverClass: 'tour-override',
+    highlightClass: 'highlight-override'
   },{
     content: '<p>This is a tip with no buttons</p><p class="action">Click the heading to continue</p>',
     highlightTarget: true,
@@ -117,6 +121,14 @@
 
   <!-- Tour CSS is defined here -->
   <style type="text/css">
+    .tour-override {
+      background: #f234ff;
+    }
+
+    .highlight-override {
+      background: #f234ff;
+    }
+
   </style>
 
 </head>

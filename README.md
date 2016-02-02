@@ -131,6 +131,9 @@ A simple Example of a step object:
 * `setup` optional function called before the tip is shown; see [setup](#setup) section
 * `teardown` optional function called when the tour moves to the next step; see [teardown](#teardown) section
 * `bind` optional list of function names to bind; see [bind](#bind) section
+* `cover` optional bool, true will add a cover to the screen to grey out the content bar the point of focus
+* `coverClass` optional String, this overrides the cover css
+* `hightlightClass` optional string, this is the css class that can be optionally applied to override or add to the .tourist-highlight 
 
 ### Step object function options
 

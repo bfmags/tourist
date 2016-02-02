@@ -40,6 +40,8 @@
 
     _.extend(Base.prototype, Backbone.Events);
 
+    Base.prototype.visable = false;
+
     Base.prototype.skipButtonTemplate = '<button class="btn btn-default btn-sm pull-right tour-next">Skip this step →</button>';
 
     Base.prototype.nextButtonTemplate = '<button class="btn btn-primary btn-sm pull-right tour-next">Next step →</button>';
@@ -50,6 +52,8 @@
 
     Base.prototype.okButtonTemplate = '<button class="btn btn-sm tour-close btn-primary">Okay</button>';
 
+    Base.prototype.coverTemplate = '<div class="<%= classes %>" tabindex="1"></div>';
+
     Base.prototype.actionLabelTemplate = _.template('<h4 class="action-label"><%= label %></h4>');
 
     Base.prototype.actionLabels = ['Do this:', 'Then this:', 'Next this:'];
@@ -58,7 +62,11 @@
 
     Base.prototype.closeButtonClasses = 'icon icon-remove';
 
-    Base.prototype.template = _.template('<div>\n  <div class="tour-container">\n    <%= close_button %>\n    <%= content %>\n    <p class="tour-counter <%= counter_class %>"><%= counter%></p>\n  </div>\n  <div class="tour-buttons">\n    <%= buttons %>\n  </div>\n</div>');
+    Base.prototype.touristCoverClasses = 'tourist-cover';
+
+    Base.prototype.addedHightlightClasses = void 0;
+
+    Base.prototype.template = _.template('<div>\n	<div class="tour-container">\n		<%= close_button %>\n		<%= content %>\n		<p class="tour-counter <%= counter_class %>"><%= counter%></p>\n	</div>\n	<div class="tour-buttons">\n		<%= buttons %>\n	</div>\n</div>');
 
     function Base(options) {
       this.options = options != null ? options : {};
@@ -66,15 +74,20 @@
       this.onClickClose = __bind(this.onClickClose, this);
       this.el = $('<div/>');
       this.initialize(options);
+      this.cover = $.parseHTML(this.coverTemplate);
       this._bindClickEvents();
       Tourist.Tip.Base._cacheTip(this);
     }
 
     Base.prototype.destroy = function() {
-      return this.el.remove();
+      this.el.remove();
+      if (this.cover != null) {
+        return this.cover.remove();
+      }
     };
 
     Base.prototype.render = function(step) {
+      var cover;
       this.hide();
       if (step) {
         this._setTarget(step.target || false, step);
@@ -86,28 +99,48 @@
         if (step.zIndex) {
           this._setZIndex(step.zIndex, step);
         }
+        cover = this._buildCover(step);
+        if (step.cover != null) {
+          $('body').append(cover);
+        }
+        this.visible = true;
       }
       return this;
     };
 
-    Base.prototype.show = function() {};
+    Base.prototype.show = function() {
+      if (this.cover != null) {
+        return this.cover.show().addClass('visible');
+      }
+    };
 
-    Base.prototype.hide = function() {};
+    Base.prototype.hide = function() {
+      if (this.cover != null) {
+        this.cover.hide().removeClass('visible');
+      }
+      return this.visable = false;
+    };
 
     Base.prototype.setTarget = function(targetElement, step) {
       return this._setTarget(targetElement, step);
     };
 
     Base.prototype.cleanupCurrentTarget = function() {
-      if (this.target && this.target.removeClass) {
+      if ((this.target != null) && (this.target.removeClass != null)) {
         this.target.removeClass(this.highlightClass);
+        if (this.addedHightlightClasses != null) {
+          this.target.removeClass(this.addedHightlightClasses);
+          this.addedHightlightClasses = void 0;
+        }
       }
-      console.log(this.target);
+      if (this.cover != null) {
+        $('.tourist-cover').remove();
+      }
       return this.target = null;
     };
 
     /*
-    Event Handlers
+    	Event Handlers
     */
 
 
@@ -122,7 +155,7 @@
     };
 
     /*
-    Private
+    	Private
     */
 
 
@@ -131,28 +164,40 @@
     Base.prototype._renderContent = function(step, contentElement) {};
 
     Base.prototype._bindClickEvents = function() {
-      var close, el, next;
+      var cont, el, that;
       el = this._getTipElement();
       el.delegate('.tour-close', 'click', this.onClickClose);
       el.delegate('.tour-next', 'click', this.onClickNext);
-      next = this.onClickNext;
-      close = this.onClickClose;
-      $(document).keydown(function(e) {
-        var key;
+      that = this;
+      cont = $('body');
+      return cont.keyup(function(e) {
+        var key, visable;
+        visable = el.is(":visible");
         key = e.which;
-        if (key === 39) {
-          return next();
-        } else if (key === 27) {
-          return close();
+        if (e.target.nodeName !== 'INPUT' && e.target.nodeName !== 'TEXTAREA') {
+          if (visable) {
+            if (key === 39) {
+              that.onClickNext();
+            } else if (key === 27) {
+              that.onClickClose();
+            }
+            if (key === 39 || key === 27) {
+              e.preventDefault();
+            }
+          }
         }
+        return false;
       });
-      return false;
     };
 
     Base.prototype._setTarget = function(target, step) {
       this.cleanupCurrentTarget();
       if (target && step && step.highlightTarget) {
         target.addClass(this.highlightClass);
+        if (step.highlightClass != null) {
+          this.addedHightlightClasses = step.highlightClass;
+          target.addClass(step.highlightClass);
+        }
       }
       return this.target = target;
     };
@@ -205,6 +250,21 @@
       closeButton = closeButton.replace(/<%= classes %>/, closeClass);
       if (step.closeButton) {
         return closeButton;
+      } else {
+        return '';
+      }
+    };
+
+    Base.prototype._buildCover = function(step) {
+      var coverClass, coverDiv;
+      coverDiv = this.coverTemplate;
+      coverClass = this.touristCoverClasses;
+      if (step.coverClass) {
+        coverClass += ' ' + step.coverClass;
+      }
+      coverDiv = coverDiv.replace(/<%= classes %>/, coverClass);
+      if (step.cover) {
+        return coverDiv;
       } else {
         return '';
       }
@@ -986,8 +1046,7 @@
       this.model.set({
         current_step: null
       });
-      this.trigger('stop', this);
-      return console.log(this.view);
+      return this.trigger('stop', this);
     };
 
     Tour.prototype._showFinalStep = function(success) {

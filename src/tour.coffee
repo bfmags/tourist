@@ -194,7 +194,6 @@ class Tourist.Tour
     @_teardownCurrentStep()
     @model.set(current_step: null)
     @trigger('stop', this)
-    console.log(@view)
 
   # Shows a final step.
   #
