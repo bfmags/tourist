@@ -1,0 +1,123 @@
+module.exports = function(grunt) {
+
+  grunt.loadNpmTasks('grunt-parallel');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-coffee');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-jasmine');
+  grunt.loadNpmTasks('grunt-serve');
+
+  grunt.initConfig(
+    {
+      pkg: grunt.file.readJSON('package.json'),
+
+      coffee: {
+        options: {
+          sourceMap: true,
+          join: true
+        },
+        build: {
+          files: {
+            './<%= pkg.name %>.js': './**/*.coffee',
+          }
+        },
+        test: {
+          expand: true,
+          cwd: 'test/src/',
+          src: ['**/*.coffee'],
+          dest: 'test/lib/',
+          ext: '.js'
+        }
+      },
+
+      uglify: {
+        options: {
+          sourceMap: true,
+          banner: '/*! Tourist.js - http://easelinc.github.io/tourist, built <%= grunt.template.today("mm-dd-yyyy") %> */\n'
+        },
+        dist: {
+          files: {
+            '<%= pkg.name %>.min.js': ['<%= pkg.name %>.js']
+          }
+        }
+      },
+
+      watch: {
+        build: {
+          files: [
+            'src/**/*.coffee'
+          ],
+          tasks: [
+            'coffee:build',
+            'uglify'
+          ],
+          options: {
+            livereload: true,
+          },
+        },
+        test: {
+          files: [
+            'test/src/**/*.coffee'
+          ],
+          tasks: [
+            'coffee:test'
+          ],
+          options: {
+            livereload: true,
+          },
+        }
+      },
+
+      parallel: {
+        grunt: {
+           options: {
+            grunt: true
+          },
+          tasks: ['watch', 'serve']
+        },
+      },
+
+      jasmine: {
+        src: '<%= pkg.name %>.js',
+        options: {
+          specs: [
+            'test/lib/tourSpec.js', 
+            'test/lib/tip/baseSpec.js', 
+            'test/lib/tip/qtipSpec.js', 
+            'test/lib/tip/bootstrapSpec.js'
+          ],
+          helpers: 'test/lib/**/*Helper.js',
+          vendor: [
+            'test/vendor/javascripts/jquery-1.9.1.js',
+            'test/vendor/javascripts/underscore-1.4.4.js',
+            'test/vendor/javascripts/backbone-1.0.0.js',
+            'test/vendor/javascripts/jquery.qtip.js',
+            'test/vendor/javascripts/jquery-ui-1.10.2.custom.js',
+            'test/vendor/javascripts/jasmine-jquery.js'
+          ]
+        }
+      },
+      serve: {
+          options: {
+              port: 9000
+          }
+      }
+    }
+  );
+
+  grunt.registerTask(
+    'test', 
+    [
+      'coffee', 
+      'jasmine'
+    ]
+  );
+
+  grunt.registerTask(
+    'default', 
+    [
+      'coffee', 
+      'uglify'
+    ]
+  );
+};

@@ -81,9 +81,10 @@
 
     Base.prototype.destroy = function() {
       this.el.remove();
-      if (this.cover != null) {
-        return this.cover.remove();
+      if ((this.cover != null) && (this.cover.remove != null)) {
+        this.cover.remove();
       }
+      return false;
     };
 
     Base.prototype.render = function(step) {

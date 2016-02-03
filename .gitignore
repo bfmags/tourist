@@ -4,3 +4,4 @@ test/lib
 node_modules/*
 tourist.coffee
 .grunt
+*.map

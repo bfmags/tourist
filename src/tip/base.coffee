@@ -57,7 +57,9 @@ class Tourist.Tip.Base
 
 	destroy: ->
 		@el.remove()
-		@cover.remove() if @cover?
+		@cover.remove() if @cover? and @cover.remove?
+		
+		false
 
 	# Render the current step as specified by the Tour Model
 	#
