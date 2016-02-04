@@ -228,14 +228,20 @@ class Tourist.Tip.BootstrapTip
   _caculateTargetPosition: (atPosition, target) ->
 
     if Object.prototype.toString.call(target) == '[object Array]'
-      return {left: target[0], top: target[1]}
+      return {
+        left : target[0], 
+        top  : target[1]
+      }
 
     bounds = @_getTargetBounds(target)
-    pos = @_lookupPosition(atPosition, bounds.width, bounds.height)
+    pos    = @_lookupPosition(atPosition, bounds.width, bounds.height)
+
+    left = bounds.left + pos[0]
+    top  = bounds.top  + pos[1]
 
     return {
-      left: bounds.left + pos[0]
-      top: bounds.top + pos[1]
+      left : left
+      top  : top
     }
 
   # Position the tip itself to be at the right place in relation to the
@@ -293,6 +299,15 @@ class Tourist.Tip.BootstrapTip
         position.top -= height/2+@options.tipOffset
       when 'bottom'
         position.top += height/2+@options.tipOffset
+
+    vpWidth  = Math.max(document.documentElement.clientWidth,  window.innerWidth  || 0)
+    vpHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+
+    if position.left < 5
+      position.left = 5
+
+    if position.top < 5
+      position.top = 5
 
     position
 

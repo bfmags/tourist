@@ -550,7 +550,7 @@
     };
 
     BootstrapTip.prototype._caculateTargetPosition = function(atPosition, target) {
-      var bounds, pos;
+      var bounds, left, pos, top;
       if (Object.prototype.toString.call(target) === '[object Array]') {
         return {
           left: target[0],
@@ -559,9 +559,11 @@
       }
       bounds = this._getTargetBounds(target);
       pos = this._lookupPosition(atPosition, bounds.width, bounds.height);
+      left = bounds.left + pos[0];
+      top = bounds.top + pos[1];
       return {
-        left: bounds.left + pos[0],
-        top: bounds.top + pos[1]
+        left: left,
+        top: top
       };
     };
 
@@ -577,7 +579,7 @@
     };
 
     BootstrapTip.prototype._adjustForArrow = function(myPosition, tipPosition) {
-      var clas, height, position, shift, tip, width, _ref2;
+      var clas, height, position, shift, tip, vpHeight, vpWidth, width, _ref2;
       _ref2 = myPosition.split(' '), clas = _ref2[0], shift = _ref2[1];
       tip = this._getTipElement();
       width = tip[0].offsetWidth;
@@ -611,6 +613,14 @@
           break;
         case 'bottom':
           position.top += height / 2 + this.options.tipOffset;
+      }
+      vpWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      vpHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+      if (position.left < 5) {
+        position.left = 5;
+      }
+      if (position.top < 5) {
+        position.top = 5;
       }
       return position;
     };
